@@ -1,5 +1,5 @@
 import express from "express";
-// import "dotenv/config";
+import "dotenv/config";
 import logger from "morgan";
 import cors from "cors";
 
