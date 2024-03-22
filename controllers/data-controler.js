@@ -1,4 +1,6 @@
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
+import Product from "../models/Product.js";
+import Supplier from "../models/Supplier.js";
 
 const getMunthDashboard = async (req, res) => {
 };
@@ -7,12 +9,14 @@ const getCustomerInf = async (req, res) => {
 };
 
 const getOrders = async (req, res) => {
-  console.log("sdfghjklkljhgfdghjk")
 };
 
 const getOrderSort = async (req, res) => {
 };
+
 const getProductsAndAvailableCategories = async (req, res) => {
+  const result = await Product.find();
+  res.json(result);
 };
 
 const getSortingFiltrationProducts = async (req, res) => {
