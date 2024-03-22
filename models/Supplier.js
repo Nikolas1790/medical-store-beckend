@@ -20,7 +20,7 @@ const Supplier = model("supplier", supplierSchema);
 export default Supplier;
 
 // приходит с фронтенда
-export const supplierJoiSchemaa = Joi.object({
+export const supplierJoiSchema = Joi.object({
   name: Joi.string().required(),
   address: Joi.string().required(),
   suppliers: Joi.string().required(),
@@ -28,5 +28,3 @@ export const supplierJoiSchemaa = Joi.object({
   amount: Joi.string().required(),
   status: Joi.string().valid('Active', 'Deactive').required() 
 });
-
-
