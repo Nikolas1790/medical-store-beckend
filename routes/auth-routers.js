@@ -2,7 +2,6 @@ import express from "express";
 import * as userSchemas from "../models/User.js";
 import { validateBody } from "../decorators/index.js";
 import authControler from "../controllers/auth-controler.js";
-import { authenticate } from "../middlewares/index.js";
 
 const authRouter = express.Router();
 const loginSchema = validateBody(userSchemas.registerAndLoginSchema);

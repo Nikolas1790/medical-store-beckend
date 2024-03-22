@@ -3,11 +3,11 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import { HttpError } from "../helpers/index.js";
 import { ctrlWrapper } from "../decorators/index.js";
-import { nanoid } from "nanoid";
+// import { nanoid } from "nanoid";
 import fs from "fs";
 import path from "path";
 
-const avatarsDir = path.resolve("public", "avatars");
+// const avatarsDir = path.resolve("public", "avatars");
 
 const { JWT_SECRET, BASE_URL } = process.env;
 

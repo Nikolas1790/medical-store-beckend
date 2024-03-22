@@ -6,22 +6,24 @@ const dataRouter = express.Router();
 
 // dataRouter.use(authenticate);
 
-dataRouter.post("/dashboard",  dataControler.addWaterVolume);
-dataRouter.patch("/customers/:customerId", dataControler.updateWaterVolume);
+dataRouter.get("/dashboard",  dataControler.getMunthDashboard);
+dataRouter.get("/customers/:customerId", dataControler.getCustomerInf);
 
-dataRouter.delete("/orders", dataControler.deleteWaterVolume);
-dataRouter.get("/orders?", dataControler.getWaterVolume);
+dataRouter.get("/orders", dataControler.getOrders);
+dataRouter.get("/orders?", dataControler.getOrderSort);
 
-dataRouter.get("/products", dataControler.dailyWaterConsumption);
-dataRouter.get("/products?", dataControler.dailyWaterConsumption);
-dataRouter.post("/products", dataControler.dailyWaterConsumption);
-dataRouter.put("/products/:productId", dataControler.dailyWaterConsumption);
+dataRouter.get("/products", dataControler.getProductsAndAvailableCategories);
+dataRouter.get("/products?", dataControler.getSortingFiltrationProducts);
+dataRouter.post("/products", dataControler.postAddingProduct);
+dataRouter.put("/products/:productId", dataControler.putEditingProductData);
+// dataRouter.del("/products/:productId", dataControler.dailyWaterConsumption);
 
-dataRouter.get("/suppliers", dataControler.dailyWaterConsumption);
-dataRouter.post("/suppliers", dataControler.dailyWaterConsumption);
-dataRouter.put("/suppliers/:supplierId", dataControler.dailyWaterConsumption);
 
-dataRouter.get("/customers", dataControler.dailyWaterConsumption);
+dataRouter.get("/suppliers", dataControler.getSuppliersList );
+dataRouter.post("/suppliers", dataControler.postAddingSupplier);
+dataRouter.put("/suppliers/:supplierId", dataControler.putEditingSupplierData);
+
+dataRouter.get("/customers", dataControler.getCustomersList);
 
 
 export default dataRouter;
