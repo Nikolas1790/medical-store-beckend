@@ -7,6 +7,7 @@ const getCustomerInf = async (req, res) => {
 };
 
 const getOrders = async (req, res) => {
+  console.log("sdfghjklkljhgfdghjk")
 };
 
 const getOrderSort = async (req, res) => {
