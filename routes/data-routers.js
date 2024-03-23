@@ -13,14 +13,11 @@ dataRouter.get("/dashboard",  dataControler.getMunthDashboard);
 dataRouter.get("/customers/:customerId", isValidId, dataControler.getCustomerInf);
 
 dataRouter.get("/orders", dataControler.getOrders);
-dataRouter.get("/orders?", dataControler.getOrderSort);
 
 dataRouter.get("/products", dataControler.getProductsAndAvailableCategories);
-dataRouter.get("/products?", dataControler.getSortingFiltrationProducts);
 dataRouter.post("/products", validateBody(productJoiSchema), dataControler.postAddingProduct);
 dataRouter.put("/products/:productId", isValidId, validateBody(productJoiSchema), dataControler.putEditingProductData);
 // dataRouter.del("/products/:productId", dataControler.dailyWaterConsumption);
-
 
 dataRouter.get("/suppliers", dataControler.getSuppliersList );
 dataRouter.post("/suppliers", validateBody(supplierJoiSchema), dataControler.postAddingSupplier);
