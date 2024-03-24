@@ -4,14 +4,12 @@ import User from "../models/User.js";
 import { HttpError } from "../helpers/index.js";
 import { ctrlWrapper } from "../decorators/index.js";
 import { nanoid } from "nanoid";
-import fs from "fs";
-import path from "path";
 
 const { JWT_SECRET, BASE_URL } = process.env;
 
 const signup = async (req, res) => {
   const { email, password, userName } = req.body;
-console.log(userName)
+// console.log(userName)
   const user = await User.findOne({ email });
   if (user) {
     throw HttpError(409, "Email already exist");
@@ -45,7 +43,6 @@ const signin = async (req, res, next) => {
   if (!passwordCompare) {
     throw HttpError(401, "Email or password is wrong");
   }
-
 
   const payload = {
     id: user._id,

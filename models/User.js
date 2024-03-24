@@ -47,4 +47,3 @@ export const loginSchema = Joi.object({
   password: Joi.string().min(8).max(48).required(),
   userName: Joi.string(),
 });
-
