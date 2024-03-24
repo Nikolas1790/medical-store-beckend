@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import Joi from "joi";
+// import Joi from "joi";
 
 // Описуємо схему замовлень в базі даних
 const orderSchema = new Schema({

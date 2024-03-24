@@ -9,18 +9,11 @@ import Order from "../models/Order.js";
 const getMunthDashboard = async (req, res) => {
 };
 const getCustomerInf = async (req, res) => {
-      // Витягнення параметру customerId з запиту
   const { customerId } = req.params;
-  console.log(req.params)
-      // Знаходимо клієнта в базі даних за його ID
   const customer = await Customer.findById(customerId);
-  
-    // Якщо клієнт не знайдений - повертаємо 404 помилку
   if (!customer) {
     return res.status(404).json({ message: "Customer not found" });
   }
-
-    // Якщо клієнт знайдений - повертаємо його дані
   res.json(customer);
 };
 
@@ -39,11 +32,9 @@ const getOrders = async (req, res) => {
   }
   const products = await Order.find(queryObject).sort(sortObject);
   res.json(products);
-
 };
 
 const getProductsAndAvailableCategories = async (req, res) => {
-  // console.log("+++++++++++g+++++++++++++")
   const { name, sortBy, order = 'asc', limit = '10', page = '1' } = req.query;
 
   // Якщо запит без query параметрів, повертаємо всі продукти
@@ -64,34 +55,38 @@ const getProductsAndAvailableCategories = async (req, res) => {
     res.json(products);
 };
 const postAddingProduct = async (req, res) => {
-  console.log("+++++++++++++++++++++++++")
   const result = await Product.create(req.body);
   res.json(result);
 };
 const putEditingProductData = async (req, res) => {
-  const {productId} = req.params
-  console.log("+++++++++++++++++++++++++", productId)
-  const result = await Product.findByIdAndUpdate(productId, req.body, {new: true})
+  const {productId} = req.params;
+  const result = await Product.findByIdAndUpdate(productId, req.body, {new: true});
   if(!result) {
    throw HttpError(404, 'Not found')
   }
   res.json(result)
 };
-
+const deleteProductItem = async (req, res) => {
+  const {productId} = req.params
+  const result = await Product.findByIdAndDelete(productId)
+  if(!result) {
+   throw HttpError(404, 'Not found')
+  }
+  res.json({
+   message: "Product deleted"
+  })
+};
 
 const getSuppliersList = async (req, res) => {
-  console.log("+++++++++++++++++++++++++")
   const result = await Supplier.find();
   res.json(result);
 };
 const postAddingSupplier = async (req, res) => {
-  console.log("+++++++++++++++++++++++++")
   const result = await Supplier.create(req.body);
   res.json(result);
 };
 const putEditingSupplierData = async (req, res) => {
-  const {supplierId} = req.params
-  // console.log("+++++++++++++++++++++++++", req.body)
+  const {supplierId} = req.params;
   const result = await Supplier.findByIdAndUpdate(supplierId, req.body, {new: true,  timestamps: false})
   if(!result) {
    throw HttpError(404, 'Not found')
@@ -102,19 +97,13 @@ const putEditingSupplierData = async (req, res) => {
   if (resultObject.date) {
     resultObject.date = moment(resultObject.date).format('MMMM D, YYYY');
   }
-
-  // console.log("gggggg", resultObject);
-
   res.json(resultObject);
 };
 
-
 const getCustomersList = async (req, res) => {
-  console.log("+++++++++++++++++++++++++")
   const customers = await Customer.find();
   res.json(customers);
 };
-
 
 export default {
   getMunthDashboard: ctrlWrapper(getMunthDashboard),
@@ -125,6 +114,7 @@ export default {
   getProductsAndAvailableCategories: ctrlWrapper(getProductsAndAvailableCategories),
   postAddingProduct: ctrlWrapper(postAddingProduct),
   putEditingProductData: ctrlWrapper(putEditingProductData),
+  deleteProductItem: ctrlWrapper(deleteProductItem),
 
   getSuppliersList: ctrlWrapper(getSuppliersList),
   postAddingSupplier: ctrlWrapper(postAddingSupplier),

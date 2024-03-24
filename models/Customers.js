@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
-import Joi from "joi";
-import { handleSaveError } from "./hooks.js";
+// import Joi from "joi";
+// import { handleSaveError } from "./hooks.js";
 
 // описание что мы сохраняем в базе
 const customerSchema = new Schema({
