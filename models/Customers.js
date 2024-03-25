@@ -7,7 +7,7 @@ const customerSchema = new Schema({
   spent: { type: String, required: true }, 
   phone: { type: String, required: true }, 
   address: { type: String, required: true },
-  register_date: { type: Date, required: true } 
+  register_date: { type: Date, required: true },
 }, { versionKey: false, timestamps: false }); 
 
 const Customer = model("Customer", customerSchema);

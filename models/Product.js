@@ -11,7 +11,8 @@ const productSchema = new Schema({
   suppliers: { type: String, required: true },
   stock: { type: Number, required: true },
   price: { type: Number, required: true },
-  category: { type: String, required: true, enum: categories }
+  category: { type: String, required: true, enum: categories },
+  // owner: { type: String, required: true },
 }, { versionKey: false, timestamps: true });
 
 productSchema.post("save", handleSaveError);

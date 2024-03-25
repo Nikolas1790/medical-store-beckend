@@ -9,7 +9,8 @@ const supplierSchema = new Schema({
   suppliers: { type: String, required: true }, 
   date: { type: Date, required: true },
   amount: { type: String, required: true }, 
-  status: { type: String, required: true, enum: ['Active', 'Deactive'] }
+  status: { type: String, required: true, enum: ['Active', 'Deactive'] },
+  // owner: { type: String, required: true },
 }, { versionKey: false, timestamps: true });
 
 supplierSchema.post("save", handleSaveError);

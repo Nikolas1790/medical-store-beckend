@@ -73,10 +73,8 @@ const getCurrent = async (req, res) => {
   });
 };
 
-
 export default {
   signup: ctrlWrapper(signup),
-
   signin: ctrlWrapper(signin),
   signout: ctrlWrapper(signout),
   getCurrent: ctrlWrapper(getCurrent),
