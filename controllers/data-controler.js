@@ -5,8 +5,24 @@ import { HttpError } from "../helpers/index.js";
 import moment from 'moment';
 import Customer from "../models/Customers.js";
 import Order from "../models/Order.js";
+import IncomeExpense from "../models/IncomeExpense.js";
 
 const getMunthDashboard = async (req, res) => {
+  const suppliersCount = await Supplier.countDocuments();
+  const productsCount = await Product.countDocuments();
+  const customersCount = await Customer.countDocuments();
+  
+  const recentCustomers = await (await Customer.find()).splice((customersCount - 5), customersCount);
+  
+  const incomeExpenses = await IncomeExpense.find().limit(6);
+
+  res.json({
+    suppliersCount,
+    productsCount,
+    customersCount,
+    recentCustomers,
+    incomeExpenses,
+  });
 };
 const getCustomerInf = async (req, res) => {
   const { customerId } = req.params;
