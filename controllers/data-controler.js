@@ -35,14 +35,14 @@ const getCustomerInf = async (req, res) => {
 
 const getOrders = async (req, res) => {
   const { name, sortBy, order = 'asc', limit = '10', page = '1' } = req.query;
+  let sortObject = {};
 
   if (!name && !sortBy) {
   const orders = await Order.find({}); 
   res.json(orders);
   }
   const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
-
-  let sortObject = {};
+  
   if (sortBy) {
     sortObject[sortBy] = order === 'asc' ? 1 : -1;
   }
@@ -94,8 +94,20 @@ const deleteProductItem = async (req, res) => {
 };
 
 const getSuppliersList = async (req, res) => {
-  const result = await Supplier.find();
-  res.json(result);
+  const { name, sortBy, order = 'asc', limit = '10', page = '1' } = req.query;
+  if (!name && !sortBy) {
+    const result = await Supplier.find({});
+    return res.json(result);
+  }
+  // Якщо є параметр name для фільтрації за іменем
+  const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
+
+  let sortObject = {};
+  if (sortBy) {
+    sortObject[sortBy] = order === 'asc' ? 1 : -1;
+  }
+  const supplier = await Supplier.find(queryObject).sort(sortObject);
+  res.json(supplier);
 };
 const postAddingSupplier = async (req, res) => {
   const result = await Supplier.create(req.body);
@@ -117,7 +129,19 @@ const putEditingSupplierData = async (req, res) => {
 };
 
 const getCustomersList = async (req, res) => {
-  const customers = await Customer.find();
+  const { name, sortBy, order = 'asc', limit = '10', page = '1' } = req.query;
+  if (!name && !sortBy) {
+    const result = await Customer.find({});
+    return res.json(result);
+  }
+  // Якщо є параметр name для фільтрації за іменем
+  const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
+
+  let sortObject = {};
+  if (sortBy) {
+    sortObject[sortBy] = order === 'asc' ? 1 : -1;
+  }
+  const customers = await Customer.find(queryObject).sort(sortObject);
   res.json(customers);
 };
 
