@@ -56,8 +56,15 @@ const getOrders = async (req, res) => {
   .sort(sortObject)
   .skip(skipNumber)
   .limit(limitNumber);
+  // Для пагинации вам также может понадобиться знать общее количество записей
+  const totalOrders = await Order.countDocuments(queryObject);
 
-  res.json( orders );
+  res.json({
+    orders,
+    total: totalOrders,
+    limit: limitNumber,
+    page: pageNumber
+  });
 
 
   // const products = await Order.find(queryObject).sort(sortObject);
