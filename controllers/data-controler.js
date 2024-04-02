@@ -37,26 +37,23 @@ const getOrders = async (req, res) => {
   const { name, sortBy, order = 'asc', limit = '5', page = '1' } = req.query;
   let sortObject = {};
 
-  // if (!name && !sortBy) {
-  // const orders = await Order.find({}); 
-  // res.json(orders);
-  // }
   const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
   
   if (sortBy) {
     sortObject[sortBy] = order === 'asc' ? 1 : -1;
   }
 
-    // Преобразование строковых значений в числа
-    const limitNumber = parseInt(limit);
-    const pageNumber = parseInt(page);
-    const skipNumber = (pageNumber - 1) * limitNumber;
+  // Преобразование строковых значений в числа
+  const limitNumber = parseInt(limit);
+  const pageNumber = parseInt(page);
+  const skipNumber = (pageNumber - 1) * limitNumber;
       // Запрос с учетом пагинации
   const orders = await Order.find(queryObject)
-  .sort(sortObject)
-  .skip(skipNumber)
-  .limit(limitNumber);
-  // Для пагинации вам также может понадобиться знать общее количество записей
+    .sort(sortObject)
+    .skip(skipNumber)
+    .limit(limitNumber);
+
+  // общее количество записей
   const totalOrders = await Order.countDocuments(queryObject);
 
   res.json({
@@ -65,31 +62,50 @@ const getOrders = async (req, res) => {
     limit: limitNumber,
     page: pageNumber
   });
-
-
-  // const products = await Order.find(queryObject).sort(sortObject);
-  // res.json(products);
 };
 
 const getProductsAndAvailableCategories = async (req, res) => {
-  const { name, sortBy, order = 'asc', limit = '10', page = '1' } = req.query;
-
+  const { name, sortBy, order = 'asc', limit = '5', page = '1' } = req.query;
+  let sortObject = {};
   // Якщо запит без query параметрів, повертаємо всі продукти
-  if (!name && !sortBy) {
-    const result = await Product.find({}, "-photo");
-    return res.json(result);
-  }
+  // if (!name && !sortBy) {
+  //   const result = await Product.find({}, "-photo");
+  //   return res.json(result);
+  // }
 
     // Якщо є параметр name для фільтрації за іменем
     const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
 
-    // Якщо є параметри для сортування
-    let sortObject = {};
     if (sortBy) {
       sortObject[sortBy] = order === 'asc' ? 1 : -1;
     }
-    const products = await Product.find(queryObject).sort(sortObject);
-    res.json(products);
+
+    // Якщо є параметри для сортування
+    
+    if (sortBy) {
+      sortObject[sortBy] = order === 'asc' ? 1 : -1;
+    }
+
+    const limitNumber = parseInt(limit);
+    const pageNumber = parseInt(page);
+    const skipNumber = (pageNumber - 1) * limitNumber;
+        // Запрос с учетом пагинации
+    const products = await Product.find(queryObject)
+      .sort(sortObject)
+      .skip(skipNumber)
+      .limit(limitNumber);
+
+  // общее количество записей
+  const totalProducts = await Product.countDocuments(queryObject);
+
+  res.json({
+    products,
+    total: totalProducts,
+    limit: limitNumber,
+    page: pageNumber
+  });
+    // const products = await Product.find(queryObject).sort(sortObject);
+    // res.json(products);
 };
 const postAddingProduct = async (req, res) => {
   const result = await Product.create(req.body);
@@ -115,20 +131,45 @@ const deleteProductItem = async (req, res) => {
 };
 
 const getSuppliersList = async (req, res) => {
-  const { name, sortBy, order = 'asc', limit = '10', page = '1' } = req.query;
-  if (!name && !sortBy) {
-    const result = await Supplier.find({});
-    return res.json(result);
-  }
+  const { name, sortBy, order = 'asc', limit = '5', page = '1' } = req.query;
+  let sortObject = {};
+  // if (!name && !sortBy) {
+  //   const result = await Supplier.find({});
+  //   return res.json(result);
+  // }
   // Якщо є параметр name для фільтрації за іменем
   const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
 
-  let sortObject = {};
+  // let sortObject = {};
   if (sortBy) {
     sortObject[sortBy] = order === 'asc' ? 1 : -1;
   }
-  const supplier = await Supplier.find(queryObject).sort(sortObject);
-  res.json(supplier);
+
+
+    // Преобразование строковых значений в числа
+    const limitNumber = parseInt(limit);
+    const pageNumber = parseInt(page);
+    const skipNumber = (pageNumber - 1) * limitNumber;
+        // Запрос с учетом пагинации
+    const suppliers = await Supplier.find(queryObject)
+      .sort(sortObject)
+      .skip(skipNumber)
+      .limit(limitNumber);
+  
+    // общее количество записей
+    const totalSuppliers = await Supplier.countDocuments(queryObject);
+  
+    res.json({
+      suppliers,
+      total: totalSuppliers,
+      limit: limitNumber,
+      page: pageNumber
+    });
+
+
+
+  // const supplier = await Supplier.find(queryObject).sort(sortObject);
+  // res.json(supplier);
 };
 const postAddingSupplier = async (req, res) => {
   const result = await Supplier.create(req.body);
@@ -150,20 +191,44 @@ const putEditingSupplierData = async (req, res) => {
 };
 
 const getCustomersList = async (req, res) => {
-  const { name, sortBy, order = 'asc', limit = '10', page = '1' } = req.query;
-  if (!name && !sortBy) {
-    const result = await Customer.find({});
-    return res.json(result);
-  }
+  const { name, sortBy, order = 'asc', limit = '5', page = '1' } = req.query;
+  let sortObject = {};
+  // if (!name && !sortBy) {
+  //   const result = await Customer.find({});
+  //   return res.json(result);
+  // }
   // Якщо є параметр name для фільтрації за іменем
   const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
 
-  let sortObject = {};
+  // let sortObject = {};
   if (sortBy) {
     sortObject[sortBy] = order === 'asc' ? 1 : -1;
   }
-  const customers = await Customer.find(queryObject).sort(sortObject);
-  res.json(customers);
+
+    // Преобразование строковых значений в числа
+    const limitNumber = parseInt(limit);
+    const pageNumber = parseInt(page);
+    const skipNumber = (pageNumber - 1) * limitNumber;
+        // Запрос с учетом пагинации
+    const customers = await Customer.find(queryObject)
+      .sort(sortObject)
+      .skip(skipNumber)
+      .limit(limitNumber);
+  
+    // общее количество записей
+    const totalCustomers = await Customer.countDocuments(queryObject);
+  
+    res.json({
+      customers,
+      total: totalCustomers,
+      limit: limitNumber,
+      page: pageNumber
+    });
+
+
+
+  // const customers = await Customer.find(queryObject).sort(sortObject);
+  // res.json(customers);
 };
 
 export default {
