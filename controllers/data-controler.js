@@ -57,7 +57,7 @@ const getOrders = async (req, res) => {
   .skip(skipNumber)
   .limit(limitNumber);
 
-  res.json({ orders });
+  res.json( orders );
 
 
   // const products = await Order.find(queryObject).sort(sortObject);
