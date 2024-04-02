@@ -34,20 +34,34 @@ const getCustomerInf = async (req, res) => {
 };
 
 const getOrders = async (req, res) => {
-  const { name, sortBy, order = 'asc', limit = '10', page = '1' } = req.query;
+  const { name, sortBy, order = 'asc', limit = '5', page = '1' } = req.query;
   let sortObject = {};
 
-  if (!name && !sortBy) {
-  const orders = await Order.find({}); 
-  res.json(orders);
-  }
+  // if (!name && !sortBy) {
+  // const orders = await Order.find({}); 
+  // res.json(orders);
+  // }
   const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
   
   if (sortBy) {
     sortObject[sortBy] = order === 'asc' ? 1 : -1;
   }
-  const products = await Order.find(queryObject).sort(sortObject);
-  res.json(products);
+
+    // Преобразование строковых значений в числа
+    const limitNumber = parseInt(limit);
+    const pageNumber = parseInt(page);
+    const skipNumber = (pageNumber - 1) * limitNumber;
+      // Запрос с учетом пагинации
+  const orders = await Order.find(queryObject)
+  .sort(sortObject)
+  .skip(skipNumber)
+  .limit(limitNumber);
+
+  res.json({ orders });
+
+
+  // const products = await Order.find(queryObject).sort(sortObject);
+  // res.json(products);
 };
 
 const getProductsAndAvailableCategories = async (req, res) => {
