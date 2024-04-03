@@ -87,42 +87,16 @@ const getProductsAndAvailableCategories = async (req, res) => {
       .skip(skipNumber)
       .limit(limitNumber);
 
-  // const totalProducts = await Product.countDocuments(queryObject);
+  const totalProducts = await Product.countDocuments(queryObject);
 
-  res.json( products );
+  res.json({
+    products,
+    total: totalProducts,
+    limit: limitNumber,
+    page: pageNumber
+  });
 };
-// const getProductsAndAvailableCategories = async (req, res) => {
-//   const { name, sortBy, order = 'asc', limit = '5', page = '1' } = req.query;
-//   let sortObject = {};
 
-//     const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
-
-//     if (sortBy) {
-//       sortObject[sortBy] = order === 'asc' ? 1 : -1;
-//     }
-
-//     if (sortBy) {
-//       sortObject[sortBy] = order === 'asc' ? 1 : -1;
-//     }
-
-//     const limitNumber = parseInt(limit);
-//     const pageNumber = parseInt(page);
-//     const skipNumber = (pageNumber - 1) * limitNumber;
-    
-//     const products = await Product.find(queryObject)
-//       .sort(sortObject)
-//       .skip(skipNumber)
-//       .limit(limitNumber);
-
-//   const totalProducts = await Product.countDocuments(queryObject);
-
-//   res.json({
-//     products,
-//     total: totalProducts,
-//     limit: limitNumber,
-//     page: pageNumber
-//   });
-// };
 const postAddingProduct = async (req, res) => {
   const result = await Product.create(req.body);
   res.json(result);
