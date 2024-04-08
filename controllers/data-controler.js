@@ -68,24 +68,23 @@ const getProductsAndAvailableCategories = async (req, res) => {
   const { name, sortBy, order = 'asc', limit = '5', page = '1' } = req.query;
   let sortObject = {};
 
-    const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
+      // Если sortBy не передан, сортировка будет по createdAt
+  if (!sortBy) {
+    sortObject['createdAt'] = 'desc';
+  } else {
+    // Если передан sortBy, используйте его для сортировки
+    sortObject[sortBy] = order === 'asc' ? 1 : -1;
+  }
 
-    if (sortBy) {
-      sortObject[sortBy] = order === 'asc' ? 1 : -1;
-    }
-
-    if (sortBy) {
-      sortObject[sortBy] = order === 'asc' ? 1 : -1;
-    }
-
-    const limitNumber = parseInt(limit);
-    const pageNumber = parseInt(page);
-    const skipNumber = (pageNumber - 1) * limitNumber;
-    
-    const products = await Product.find(queryObject)
-      .sort(sortObject)
-      .skip(skipNumber)
-      .limit(limitNumber);
+  const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
+  const limitNumber = parseInt(limit);
+  const pageNumber = parseInt(page);
+  const skipNumber = (pageNumber - 1) * limitNumber;
+  
+  const products = await Product.find(queryObject)
+    .sort(sortObject)
+    .skip(skipNumber)
+    .limit(limitNumber);
 
   const totalProducts = await Product.countDocuments(queryObject);
 
@@ -96,6 +95,39 @@ const getProductsAndAvailableCategories = async (req, res) => {
     page: pageNumber
   });
 };
+// const getProductsAndAvailableCategories = async (req, res) => {
+//   const { name, sortBy, order = 'asc', limit = '5', page = '1' } = req.query;
+//   let sortObject = {};
+
+//     const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
+
+//     if (sortBy) {
+//       sortObject[sortBy] = order === 'asc' ? 1 : -1;
+//     }
+
+//     if (sortBy) {
+//       sortObject[sortBy] = order === 'asc' ? 1 : -1;
+//     }
+
+//     const limitNumber = parseInt(limit);
+//     const pageNumber = parseInt(page);
+//     const skipNumber = (pageNumber - 1) * limitNumber;
+    
+//     const products = await Product.find(queryObject)
+//       .sort(sortObject)
+//       .skip(skipNumber)
+//       .limit(limitNumber);
+
+//   const totalProducts = await Product.countDocuments(queryObject);
+
+//   res.json({
+//     products,
+//     total: totalProducts,
+//     limit: limitNumber,
+//     page: pageNumber
+//   });
+// };
+
 
 const postAddingProduct = async (req, res) => {
   const result = await Product.create(req.body);
