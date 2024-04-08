@@ -156,12 +156,14 @@ const getSuppliersList = async (req, res) => {
   const { name, sortBy, order = 'asc', limit = '5', page = '1' } = req.query;
   let sortObject = {};
 
-  const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
-
-  if (sortBy) {
+  if (!sortBy) {
+    sortObject['createdAt'] = 'desc';
+  } else {
+    // Если передан sortBy, используйте его для сортировки
     sortObject[sortBy] = order === 'asc' ? 1 : -1;
   }
-    // Преобразование строковых значений в числа
+
+  const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
     const limitNumber = parseInt(limit);
     const pageNumber = parseInt(page);
     const skipNumber = (pageNumber - 1) * limitNumber;
@@ -180,6 +182,34 @@ const getSuppliersList = async (req, res) => {
       page: pageNumber
     });
 };
+// const getSuppliersList = async (req, res) => {
+//   const { name, sortBy, order = 'asc', limit = '5', page = '1' } = req.query;
+//   let sortObject = {};
+
+//   const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
+
+//   if (sortBy) {
+//     sortObject[sortBy] = order === 'asc' ? 1 : -1;
+//   }
+//     // Преобразование строковых значений в числа
+//     const limitNumber = parseInt(limit);
+//     const pageNumber = parseInt(page);
+//     const skipNumber = (pageNumber - 1) * limitNumber;
+    
+//     const suppliers = await Supplier.find(queryObject)
+//       .sort(sortObject)
+//       .skip(skipNumber)
+//       .limit(limitNumber);
+
+//     const totalSuppliers = await Supplier.countDocuments(queryObject);
+  
+//     res.json({
+//       suppliers,
+//       total: totalSuppliers,
+//       limit: limitNumber,
+//       page: pageNumber
+//     });
+// };
 const postAddingSupplier = async (req, res) => {
   const result = await Supplier.create(req.body);
   res.json(result);
