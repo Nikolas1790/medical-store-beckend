@@ -43,17 +43,15 @@ const getOrders = async (req, res) => {
     sortObject[sortBy] = order === 'asc' ? 1 : -1;
   }
 
-  // Преобразование строковых значений в числа
   const limitNumber = parseInt(limit);
   const pageNumber = parseInt(page);
   const skipNumber = (pageNumber - 1) * limitNumber;
-      // Запрос с учетом пагинации
+
   const orders = await Order.find(queryObject)
     .sort(sortObject)
     .skip(skipNumber)
     .limit(limitNumber);
 
-  // общее количество записей
   const totalOrders = await Order.countDocuments(queryObject);
 
   res.json({
@@ -68,11 +66,9 @@ const getProductsAndAvailableCategories = async (req, res) => {
   const { name, sortBy, order = 'asc', limit = '5', page = '1' } = req.query;
   let sortObject = {};
 
-      // Если sortBy не передан, сортировка будет по createdAt
   if (!sortBy) {
     sortObject['createdAt'] = 'desc';
   } else {
-    // Если передан sortBy, используйте его для сортировки
     sortObject[sortBy] = order === 'asc' ? 1 : -1;
   }
 
@@ -95,39 +91,6 @@ const getProductsAndAvailableCategories = async (req, res) => {
     page: pageNumber
   });
 };
-// const getProductsAndAvailableCategories = async (req, res) => {
-//   const { name, sortBy, order = 'asc', limit = '5', page = '1' } = req.query;
-//   let sortObject = {};
-
-//     const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
-
-//     if (sortBy) {
-//       sortObject[sortBy] = order === 'asc' ? 1 : -1;
-//     }
-
-//     if (sortBy) {
-//       sortObject[sortBy] = order === 'asc' ? 1 : -1;
-//     }
-
-//     const limitNumber = parseInt(limit);
-//     const pageNumber = parseInt(page);
-//     const skipNumber = (pageNumber - 1) * limitNumber;
-    
-//     const products = await Product.find(queryObject)
-//       .sort(sortObject)
-//       .skip(skipNumber)
-//       .limit(limitNumber);
-
-//   const totalProducts = await Product.countDocuments(queryObject);
-
-//   res.json({
-//     products,
-//     total: totalProducts,
-//     limit: limitNumber,
-//     page: pageNumber
-//   });
-// };
-
 
 const postAddingProduct = async (req, res) => {
   const result = await Product.create(req.body);
@@ -159,7 +122,6 @@ const getSuppliersList = async (req, res) => {
   if (!sortBy) {
     sortObject['createdAt'] = 'desc';
   } else {
-    // Если передан sortBy, используйте его для сортировки
     sortObject[sortBy] = order === 'asc' ? 1 : -1;
   }
 
@@ -182,34 +144,7 @@ const getSuppliersList = async (req, res) => {
       page: pageNumber
     });
 };
-// const getSuppliersList = async (req, res) => {
-//   const { name, sortBy, order = 'asc', limit = '5', page = '1' } = req.query;
-//   let sortObject = {};
 
-//   const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
-
-//   if (sortBy) {
-//     sortObject[sortBy] = order === 'asc' ? 1 : -1;
-//   }
-//     // Преобразование строковых значений в числа
-//     const limitNumber = parseInt(limit);
-//     const pageNumber = parseInt(page);
-//     const skipNumber = (pageNumber - 1) * limitNumber;
-    
-//     const suppliers = await Supplier.find(queryObject)
-//       .sort(sortObject)
-//       .skip(skipNumber)
-//       .limit(limitNumber);
-
-//     const totalSuppliers = await Supplier.countDocuments(queryObject);
-  
-//     res.json({
-//       suppliers,
-//       total: totalSuppliers,
-//       limit: limitNumber,
-//       page: pageNumber
-//     });
-// };
 const postAddingSupplier = async (req, res) => {
   const result = await Supplier.create(req.body);
   res.json(result);
@@ -222,7 +157,6 @@ const putEditingSupplierData = async (req, res) => {
   }
   const resultObject = result.toObject();
 
-  // Форматуємо дату в звичайному об'єкті JavaScript
   if (resultObject.date) {
     resultObject.date = moment(resultObject.date).format('MMMM D, YYYY');
   }
@@ -239,17 +173,15 @@ const getCustomersList = async (req, res) => {
     sortObject[sortBy] = order === 'asc' ? 1 : -1;
   }
 
-    // Преобразование строковых значений в числа
     const limitNumber = parseInt(limit);
     const pageNumber = parseInt(page);
     const skipNumber = (pageNumber - 1) * limitNumber;
-        // Запрос с учетом пагинации
+    
     const customers = await Customer.find(queryObject)
       .sort(sortObject)
       .skip(skipNumber)
       .limit(limitNumber);
-  
-    // общее количество записей
+
     const totalCustomers = await Customer.countDocuments(queryObject);
   
     res.json({

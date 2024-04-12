@@ -25,5 +25,4 @@ dataRouter.put("/suppliers/:supplierId", isValidId, validateBody(supplierJoiSche
 
 dataRouter.get("/customers", dataControler.getCustomersList);
 
-
 export default dataRouter;

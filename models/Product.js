@@ -12,7 +12,6 @@ const productSchema = new Schema({
   stock: { type: Number, required: true },
   price: { type: Number, required: true },
   category: { type: String, required: true, enum: categories },
-  // owner: { type: String, required: true },
 }, { versionKey: false, timestamps: true });
 
 productSchema.post("save", handleSaveError);
@@ -21,7 +20,6 @@ productSchema.post("findOneAndUpdate", handleSaveError);
 
 const Product = model("product", productSchema);
 export default Product;
-
 
 export const productJoiSchema = Joi.object({
   name: Joi.string().required(),
