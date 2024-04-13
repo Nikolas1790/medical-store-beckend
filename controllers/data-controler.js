@@ -66,11 +66,14 @@ const getProductsAndAvailableCategories = async (req, res) => {
   const { name, sortBy, order = 'asc', limit = '5', page = '1' } = req.query;
   let sortObject = {};
 
-  if (!sortBy) {
-    sortObject['createdAt'] = 'desc';
-  } else {
+  if (sortBy) {
     sortObject[sortBy] = order === 'asc' ? 1 : -1;
   }
+  // if (!sortBy) {
+  //   sortObject['name'] = 'desc';
+  // } else {
+  //   sortObject[sortBy] = order === 'asc' ? 1 : -1;
+  // }
 
   const queryObject = name ? { name: { $regex: name, $options: "i" } } : {};
   const limitNumber = parseInt(limit);
