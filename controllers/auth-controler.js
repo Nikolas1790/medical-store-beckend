@@ -17,17 +17,34 @@ const signup = async (req, res) => {
   const hashPassword = await bcrypt.hash(password, 10);
   const verificationToken = nanoid();
 
+  // const newUser = await User.create({
+  //   ...req.body,
+  //   password: hashPassword,
+  //   verificationToken,
+  // });
+
   const newUser = await User.create({
-    ...req.body,
+    email,
     password: hashPassword,
-    verificationToken,
+    name,
+    verificationToken
   });
+
+  const payload = {
+    id: newUser._id,
+  };
+
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "24h" });
+
+  // Save the token in the database if you need to (optional)
+  await User.findByIdAndUpdate(newUser._id, { token });
 
   res.status(201).json({
     user: {
       email: newUser.email,
-      userName: newUser.userName,
+      name: newUser.name
     },
+    token
   });
 };
 
